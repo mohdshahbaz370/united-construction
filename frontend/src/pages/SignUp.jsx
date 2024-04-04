@@ -31,7 +31,6 @@ export default function SignUp() {
             body: JSON.stringify(values),
           });
           const data = await res.json();
-          console.log(data);
           if (data.success) {
             setState({ ...state, loading: false });
             setState({ ...state, message: data?.message });
