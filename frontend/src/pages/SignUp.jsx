@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Formik, ErrorMessage, Field, Form } from "formik";
 import * as Yup from "yup";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function SignUp() {
-  const [state, setState] = useState({ message: "" });
+  const [state, setState] = useState({ message: "", loading: false });
+  const navigate = useNavigate();
   return (
     <Formik
       initialValues={{
@@ -20,6 +22,7 @@ export default function SignUp() {
       })}
       onSubmit={async (values) => {
         try {
+          setState({ ...state, loading: true });
           const res = await fetch("/api/auth/signup", {
             method: "POST",
             headers: {
@@ -30,12 +33,16 @@ export default function SignUp() {
           const data = await res.json();
           console.log(data);
           if (data.success) {
-            setState({ ...state, message: data.message });
+            setState({ ...state, loading: false });
+            setState({ ...state, message: data?.message });
+            navigate("/signin");
           } else {
-            setState({ ...state, message: data.message });
+            setState({ ...state, loading: false });
+            setState({ ...state, message: data?.message });
           }
         } catch (err) {
-          setState({ ...state, message: err.message });
+          setState({ ...state, loading: false });
+          setState({ ...state, message: err?.message });
         }
       }}
     >
@@ -74,10 +81,16 @@ export default function SignUp() {
               type="submit"
               className="bg-slate-700 border p-3 rounded-lg text-white uppercase disabled:opacity-80 hover:opacity-95"
             >
-              Submit
+              {state?.loading ? "loading..." : "sign up"}
             </button>
           </Form>
-          {state.message && state.message}
+          <div className="flex gap-2 mt-5">
+            <p>Have an account?</p>
+            <Link to="/signin">
+              <span className="text-blue-700">Sign in</span>
+            </Link>
+          </div>
+          {state?.message && state?.message}
         </div>
       )}
     </Formik>
