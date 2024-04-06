@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Formik, ErrorMessage, Field, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 export default function SignUp() {
   const [state, setState] = useState({ message: "", loading: false });
@@ -82,6 +83,7 @@ export default function SignUp() {
             >
               {state?.loading ? "loading..." : "sign up"}
             </button>
+            <OAuth />
           </Form>
           <div className="flex gap-2 mt-5">
             <p>Have an account?</p>
