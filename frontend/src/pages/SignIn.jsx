@@ -1,11 +1,18 @@
-import { useState } from "react";
 import { Formik, ErrorMessage, Field, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "../redux/user/userSlice";
 
 export default function SignIn() {
-  const [state, setState] = useState({ message: "", loading: false });
   const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   return (
     <Formik
       initialValues={{
@@ -20,7 +27,7 @@ export default function SignIn() {
       })}
       onSubmit={async (values) => {
         try {
-          setState({ ...state, loading: true });
+          dispatch(signInStart());
           const res = await fetch("/api/auth/signin", {
             method: "POST",
             headers: {
@@ -31,21 +38,19 @@ export default function SignIn() {
           const data = await res.json();
           console.log("...", data);
           if (data.success === false) {
-            setState({ ...state, loading: false });
-            setState({ ...state, message: data?.message });
+            dispatch(signInFailure(data?.message));
           } else {
-            setState({ ...state, loading: false });
+            dispatch(signInSuccess(data));
             navigate("/");
           }
         } catch (err) {
-          setState({ ...state, loading: false });
-          setState({ ...state, message: err?.message });
+          dispatch(signInFailure(err?.message));
         }
       }}
     >
       {({ isSubmitting }) => (
         <div className="p-3 max-w-lg mx-auto">
-          <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
+          <h1 className="text-3xl text-center font-semibold my-7">Sign In</h1>
           <Form className="flex flex-col gap-4">
             <Field
               className="border p-3 rounded-lg"
@@ -70,7 +75,7 @@ export default function SignIn() {
               disabled={isSubmitting}
               className="bg-slate-700 border p-3 rounded-lg text-white uppercase disabled:opacity-80 hover:opacity-95"
             >
-              {state?.loading ? "loading..." : "sign in"}
+              {loading ? "loading..." : "sign in"}
             </button>
           </Form>
           <div className="flex gap-2 mt-5">
@@ -79,7 +84,7 @@ export default function SignIn() {
               <span className="text-blue-700">Sign up</span>
             </Link>
           </div>
-          {state?.message && state?.message}
+          {error && error}
         </div>
       )}
     </Formik>
