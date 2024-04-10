@@ -86,15 +86,12 @@ export default function Profile() {
     );
   };
 
-  console.log("...", currentUser?.avatar, formData?.avatar);
-
   const handleDelete = async () => {
     dispatch(deleteUserStart());
     try {
       const res = await fetch(`/api/user/delete/${currentUser?._id}`, {
         method: "DELETE",
       });
-      console.log("...", res);
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data?.message));

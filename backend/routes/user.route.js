@@ -3,6 +3,7 @@ const {
   userController,
   updateUser,
   deleteUser,
+  listing,
 } = require("../controllers/user.controller");
 const { verifyToken } = require("../utils/verifyUser");
 
