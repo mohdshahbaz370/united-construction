@@ -13,7 +13,7 @@ mongoose
   .catch((err) => console.error(err));
 const app = express();
 
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cookieParser());
