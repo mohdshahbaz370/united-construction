@@ -4,7 +4,7 @@ const userRouter = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
 const listingRouter = require("./routes/listing.route");
 const cookieParser = require("cookie-parser");
-import path from "path";
+const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config();
 mongoose
