@@ -14,6 +14,7 @@ mongoose
 const app = express();
 
 // const __dirname = path.resolve();
+const frontendPath = path.resolve(__dirname, "../frontend/dist");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -23,10 +24,16 @@ app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/listing", listingRouter);
 
-app.use(express.static(path.join(__dirname, "/frontend/dist")));
+// app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+// });
+
+app.use(express.static(frontendPath));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 app.use((error, req, res, next) => {
