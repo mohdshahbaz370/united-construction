@@ -8,7 +8,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config();
 mongoose
-  .connect(process.env.DATABASE_LOCAL)
+  .connect(process.env.DATABASE)
   .then(() => console.log("DB connected"))
   .catch((err) => console.error(err));
 const app = express();
