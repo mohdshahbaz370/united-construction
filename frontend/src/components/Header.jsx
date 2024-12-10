@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import img from "../assets/images/pexels-quang-nguyen-vinh.jpg";
 
 export default function Header() {
